@@ -11,10 +11,20 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ".:/src"
-    ports:
-      - "8000:80"
+    expose:
+      - "80"
     depends_on:
      - db
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./static:/static
+    depends_on:
+      - web
 
 volumes:
   surveydata:

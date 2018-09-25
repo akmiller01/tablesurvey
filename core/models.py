@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 
 
 class Currency(models.Model):
@@ -28,7 +29,7 @@ class Organisation(models.Model):
 
 class Contact(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.user.get_full_name()
@@ -38,21 +39,21 @@ class Year(models.Model):
     value = models.IntegerField()
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
 
 class TableRow(models.Model):
     value = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
 
 class TableColumn(models.Model):
     value = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
 
 class TableSpecification(models.Model):
@@ -73,3 +74,10 @@ class SurveyCampaign(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class SurveyResponse(models.Model):
+    organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
+    year = models.ForeignKey(Year, blank=True, null=True, on_delete=models.SET_NULL)
+    currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
+    response = JSONField()

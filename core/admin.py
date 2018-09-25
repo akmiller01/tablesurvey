@@ -25,35 +25,13 @@ class ContactAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
-class TableRowInline(admin.TabularInline):
-    model = TableRow
-
-
-class TableColumnInline(admin.TabularInline):
-    model = TableColumn
-
-
 class TableSpecificationAdmin(admin.ModelAdmin):
     list_display = ['title']
-    inlines = [TableRowInline, TableColumnInline, ]
     save_on_top = True
-
-
-class YearInline(admin.TabularInline):
-    model = Year
-
-
-class OrganisationInline(admin.TabularInline):
-    model = Organisation
-
-
-class TableSpecificationInline(admin.TabularInline):
-    model = TableSpecification
 
 
 class SurveyCampaignAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
-    inlines = [OrganisationInline, YearInline, TableSpecificationInline]
     prepopulated_fields = {'slug': ('title',), }
     save_on_top = True
 
@@ -61,3 +39,8 @@ class SurveyCampaignAdmin(admin.ModelAdmin):
 admin.site.register(Organisation, OrganisationAdmin)
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(TableSpecification, TableSpecificationAdmin)
+admin.site.register(SurveyCampaign, SurveyCampaignAdmin)
+admin.site.register(TableRow)
+admin.site.register(TableColumn)
+admin.site.register(Year)
