@@ -73,6 +73,7 @@ class SurveyCampaign(models.Model):
     organisations = models.ManyToManyField(Organisation)
     years = models.ManyToManyField(Year)
     tables = models.ManyToManyField(TableSpecification)
+    instructions = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.title
