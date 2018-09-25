@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Currency, Organisation, Contact, SurveyCampaign, TableRow, TableColumn, TableSpecification, Year
+from core.models import *
 
 
 class ContactInline(admin.TabularInline):
@@ -44,3 +44,4 @@ admin.site.register(SurveyCampaign, SurveyCampaignAdmin)
 admin.site.register(TableRow)
 admin.site.register(TableColumn)
 admin.site.register(Year)
+admin.site.register(SurveyResponse)
