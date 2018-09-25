@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
+from django.urls import reverse
 
 
 class Currency(models.Model):
@@ -76,8 +77,12 @@ class SurveyCampaign(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse("core.views.edit", args=[self.slug])
+
 
 class SurveyResponse(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
     year = models.ForeignKey(Year, blank=True, null=True, on_delete=models.SET_NULL)
     currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
