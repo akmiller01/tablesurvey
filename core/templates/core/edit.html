@@ -26,7 +26,7 @@
     <h3>Instructions to fill in the form <span onclick="$('#instructions').slideToggle()" id="instructTitle">(show/hide)</span></h3>
     <div id="instructions">
     <p>
-        {{ campaign.instructions }}
+        {{ campaign.instructions|linebreaks }}
     </p>
     </div>
         <label>Change year:</label>
