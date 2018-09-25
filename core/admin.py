@@ -31,7 +31,7 @@ class TableSpecificationAdmin(admin.ModelAdmin):
 
 
 class SurveyCampaignAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug']
+    list_display = ['title', 'active']
     prepopulated_fields = {'slug': ('title',), }
     save_on_top = True
 

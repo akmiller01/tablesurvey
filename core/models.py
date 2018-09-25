@@ -68,6 +68,7 @@ class TableSpecification(models.Model):
 class SurveyCampaign(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
+    active = models.BooleanField(default=True)
     organisations = models.ManyToManyField(Organisation)
     years = models.ManyToManyField(Year)
     tables = models.ManyToManyField(TableSpecification)
