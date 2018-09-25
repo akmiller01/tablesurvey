@@ -12,3 +12,8 @@ docker-compose run web python manage.py collectstatic --noinput
 ```bash
 docker-compose up
 ```
+
+# TODO
+0. Add which campaign to surveyresponse model, so it can be queried.
+1. Capture POSTed form data gracefully.
+2. Return POSTed form data gracefully.
