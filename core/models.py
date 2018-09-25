@@ -41,15 +41,6 @@ class Year(models.Model):
         return self.value
 
 
-class SurveyCampaign(models.Model):
-    title = models.CharField(max_length=255, unique=True)
-    organisations = models.ManyToManyField(Organisation)
-    years = models.ManyToManyField(Year)
-
-    def __str__(self):
-        return self.title
-
-
 class TableRow(models.Model):
     value = models.CharField(max_length=255)
 
@@ -66,9 +57,18 @@ class TableColumn(models.Model):
 
 class TableSpecification(models.Model):
     title = models.CharField(max_length=255, unique=True)
-    campaign = models.ForeignKey(SurveyCampaign, on_delete=models.CASCADE)
     rows = models.ManyToManyField(TableRow)
     columns = models.ManyToManyField(TableColumn)
+
+    def __str__(self):
+        return self.title
+
+
+class SurveyCampaign(models.Model):
+    title = models.CharField(max_length=255, unique=True)
+    organisations = models.ManyToManyField(Organisation)
+    years = models.ManyToManyField(Year)
+    tables = models.ManyToManyField(TableSpecification)
 
     def __str__(self):
         return self.title
