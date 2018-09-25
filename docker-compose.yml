@@ -4,7 +4,7 @@ services:
   db:
     image: postgres
     volumes:
-      - ghtsdata:/var/lib/postgresql/data
+      - surveydata:/var/lib/postgresql/data
   web:
     build:
       context: .
@@ -15,7 +15,7 @@ services:
       - "80:80"
     depends_on:
      - db
-     
+
 volumes:
-  ghtsdata:
+  surveydata:
     external: true
