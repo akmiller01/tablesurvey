@@ -154,7 +154,10 @@
         }
     });
 //    Functions to fill in cells from Django input
-//    TODO: Make a function that could possibly fill this back in via JSONField
+    {% for response in responses %}
+        $( "input[name='{{ response.coordinates }}']" ).val("{{ response.value }}"=="None"?"":"{{ response.value }}")
+    {% endfor %}
+    $("[name='currency']").val("{{ currency }}"=="None"?"":"{{ currency.iso }}")
 //    Functions to warn if leaving and changes made
     $('input').change(function() {
         if( $(this).val() != "" ){
@@ -196,7 +199,7 @@
         };
     });
     $( "button.export" ).mousedown(function(){
-        var url =  "";
+        var url =  "/export";
         window.open(url, '_blank');
     });
     </script>

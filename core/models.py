@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Currency(models.Model):
     symbol = models.CharField(max_length=10)
-    iso = models.CharField(max_length=3)
+    iso = models.CharField(max_length=3, unique=True)
     description = models.CharField(max_length=255)
 
     class Meta:
@@ -84,6 +84,7 @@ class SurveyCampaign(models.Model):
 
 class SurveyResponse(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     campaign = models.ForeignKey(SurveyCampaign, blank=True, null=True, on_delete=models.SET_NULL)
     table = models.ForeignKey(TableSpecification, blank=True, null=True, on_delete=models.SET_NULL)
     organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
@@ -91,3 +92,7 @@ class SurveyResponse(models.Model):
     currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
     row = models.ForeignKey(TableRow, blank=True, null=True, on_delete=models.SET_NULL)
     column = models.ForeignKey(TableColumn, blank=True, null=True, on_delete=models.SET_NULL)
+    value = models.CharField(max_length=255, blank=True, null=True)
+
+    def coordinates(self):
+        return "|".join([str(self.table), str(self.row), str(self.column)])
