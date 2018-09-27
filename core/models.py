@@ -84,7 +84,10 @@ class SurveyCampaign(models.Model):
 
 class SurveyResponse(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    campaign = models.ForeignKey(SurveyCampaign, blank=True, null=True, on_delete=models.SET_NULL)
+    table = models.ForeignKey(TableSpecification, blank=True, null=True, on_delete=models.SET_NULL)
     organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
     year = models.ForeignKey(Year, blank=True, null=True, on_delete=models.SET_NULL)
     currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
-    response = JSONField()
+    row = models.ForeignKey(TableRow, blank=True, null=True, on_delete=models.SET_NULL)
+    column = models.ForeignKey(TableColumn, blank=True, null=True, on_delete=models.SET_NULL)
