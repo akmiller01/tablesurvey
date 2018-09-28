@@ -148,7 +148,7 @@ def export(request, slug=None):
             survey_response.table.title,
             survey_response.organisation.name,
             survey_response.year.value,
-            survey_response.currency.iso,
+            survey_response.currency.iso if survey_response.currency else "",
             survey_response.row.value,
             survey_response.column.value,
             survey_response.value
