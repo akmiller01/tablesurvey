@@ -8,6 +8,7 @@ from csv import writer as csvwriter
 
 @login_required
 def edit(request, slug, year=None):
+    messages = []
     user = request.user
     contact = get_object_or_404(Contact, user=user)
     organisation = contact.organisation
@@ -19,32 +20,36 @@ def edit(request, slug, year=None):
     else:
         year = int(year)
     if request.method == "POST":
-        currency_iso = request.POST.get('currency')
-        if currency_iso:
-            currency = Currency.objects.filter(iso=currency_iso).first()
+        if campaign.active:
+            currency_iso = request.POST.get('currency')
+            if currency_iso:
+                currency = Currency.objects.filter(iso=currency_iso).first()
+            else:
+                currency = None
+            exclude_keys = ["currency", "csrfmiddlewaretoken"]
+            for key, value in request.POST.items():
+                if key not in exclude_keys:
+                    split_coords = key.split("|")
+                    table_title = split_coords[0]
+                    row_value = split_coords[1]
+                    column_value = split_coords[2]
+                    table = TableSpecification.objects.filter(title=table_title).first()
+                    row = TableRow.objects.filter(value=row_value).first()
+                    column = TableColumn.objects.filter(value=column_value).first()
+                    response, _ = SurveyResponse.objects.get_or_create(
+                        campaign=campaign,
+                        table=table,
+                        organisation=organisation,
+                        year=year,
+                        row=row,
+                        column=column
+                    )
+                    response.currency = currency
+                    response.value = str(value)
+                    response.save()
+            messages.append("Your response has been successfully submitted.")
         else:
-            currency = None
-        exclude_keys = ["currency", "csrfmiddlewaretoken"]
-        for key, value in request.POST.items():
-            if key not in exclude_keys:
-                split_coords = key.split("|")
-                table_title = split_coords[0]
-                row_value = split_coords[1]
-                column_value = split_coords[2]
-                table = TableSpecification.objects.filter(title=table_title).first()
-                row = TableRow.objects.filter(value=row_value).first()
-                column = TableColumn.objects.filter(value=column_value).first()
-                response, _ = SurveyResponse.objects.get_or_create(
-                    campaign=campaign,
-                    table=table,
-                    organisation=organisation,
-                    year=year,
-                    row=row,
-                    column=column
-                )
-                response.currency = currency
-                response.value = str(value)
-                response.save()
+            messages.append("Sorry, this campaign is no longer accepting responses.")
     responses = SurveyResponse.objects.filter(
         campaign=campaign,
         organisation=organisation,
@@ -65,7 +70,8 @@ def edit(request, slug, year=None):
             "years": years,
             "currencies": currencies,
             "responses": responses,
-            "currency": currency
+            "currency": currency,
+            "messages": messages
         }
     )
 

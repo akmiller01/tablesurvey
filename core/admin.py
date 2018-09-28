@@ -36,6 +36,12 @@ class SurveyCampaignAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
+class SurveyResponseAdmin(admin.ModelAdmin):
+    list_display = ['organisation', 'updated', 'campaign', 'year', 'table', 'column', 'row', 'value']
+    list_filter = ["year", "organisation", "timestamp", "updated"]
+    save_on_top = True
+
+
 admin.site.register(Organisation, OrganisationAdmin)
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Contact, ContactAdmin)
@@ -44,4 +50,4 @@ admin.site.register(SurveyCampaign, SurveyCampaignAdmin)
 admin.site.register(TableRow)
 admin.site.register(TableColumn)
 admin.site.register(Year)
-admin.site.register(SurveyResponse)
+admin.site.register(SurveyResponse, SurveyResponseAdmin)

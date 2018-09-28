@@ -23,8 +23,19 @@
     {% block content %}
         <div id="content" style="width:100%">
     <h1>Data for {{ organisation }} in {{ year }}</h1>
+    {% if messages %}
+    <ul class="messagelist">
+      {% for message in messages %}
+        <li class="warning">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <h3>Instructions to fill in the form <span onclick="$('#instructions').slideToggle()" id="instructTitle">(show/hide)</span></h3>
-    <div id="instructions">
+    <div id="instructions"
+    {% if responses %}
+        style="display:none;"
+    {% endif %}
+    >
     <p>
         {{ campaign.instructions|linebreaks }}
     </p>
