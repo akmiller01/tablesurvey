@@ -10,6 +10,7 @@ from csv import writer as csvwriter
 def edit(request, slug, year=None):
     messages = []
     new_rows = ["new_row{}".format(i) for i in range(1,5)]
+    new_row_dict = {}
     user = request.user
     contact = get_object_or_404(Contact, user=user)
     organisation = contact.organisation
@@ -30,21 +31,32 @@ def edit(request, slug, year=None):
             exclude_keys = ["currency", "csrfmiddlewaretoken"]
             for key, value in request.POST.items():
                 split_coords = key.split("|")
-                if len(split_coords)>1:
+                if key not in exclude_keys and len(split_coords)==2:
                     table_title = split_coords[0]
                     table = TableSpecification.objects.filter(title=table_title).first()
                     row_value = split_coords[1]
-                    if row_value in new_rows:
+                    if row_value in new_rows and str(value)!="":
                         new_row, _ = TableRow.objects.get_or_create(
                             value=str(value),
                             organisation=organisation
                         )
                         new_row.save()
-                if key not in exclude_keys:
+                        table.rows.add(new_row)
+                        new_row_dict[row_value] = value
+                elif key not in exclude_keys and len(split_coords)==3 and str(value)!="":
+                    table_title = split_coords[0]
+                    row_value = split_coords[1]
+                    if row_value in new_rows:
+                        if row_value in new_row_dict:
+                            row_value = new_row_dict[row_value]
+                        else:
+                            messages.append("Please enter a row name before you enter a value in a new row.")
+                            continue
                     column_value = split_coords[2]
 
+                    table = TableSpecification.objects.filter(title=table_title).first()
                     row = TableRow.objects.filter(value=row_value,organisation=organisation).first()
-                    if not row.exists():
+                    if not row:
                         row = TableRow.objects.filter(value=row_value).first()
                     column = TableColumn.objects.filter(value=column_value).first()
                     response, _ = SurveyResponse.objects.get_or_create(
