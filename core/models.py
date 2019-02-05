@@ -42,9 +42,9 @@ class Year(models.Model):
     def __str__(self):
         return str(self.value)
 
-
 class TableRow(models.Model):
     value = models.CharField(max_length=255)
+    organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return str(self.value)
@@ -61,6 +61,7 @@ class TableSpecification(models.Model):
     title = models.CharField(max_length=255, unique=True)
     rows = models.ManyToManyField(TableRow)
     columns = models.ManyToManyField(TableColumn)
+    allow_user_rows = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

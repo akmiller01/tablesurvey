@@ -9,6 +9,7 @@ from csv import writer as csvwriter
 @login_required
 def edit(request, slug, year=None):
     messages = []
+    new_rows = ["new_row{}".format(i) for i in range(1,5)]
     user = request.user
     contact = get_object_or_404(Contact, user=user)
     organisation = contact.organisation
@@ -71,7 +72,8 @@ def edit(request, slug, year=None):
             "currencies": currencies,
             "responses": responses,
             "currency": currency,
-            "messages": messages
+            "messages": messages,
+            "new_rows": new_rows
         }
     )
 

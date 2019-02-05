@@ -87,10 +87,32 @@
         <tr>
             <td><b>{{ row }}</b></td>
             {% for column in tableSpec.columns.all %}
-                <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+                {% if not row.organisation %}
+                  <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+                {% endif %}
             {% endfor %}
         </tr>
     {% endfor %}
+    {% if tableSpec.allow_user_rows %}
+      {% for row in tableSpec.rows.all %}
+          <tr>
+              <td><b>{{ row }}</b></td>
+              {% for column in tableSpec.columns.all %}
+                  {% if row.organisation == organisation %}
+                    <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+                  {% endif %}
+              {% endfor %}
+          </tr>
+      {% endfor %}
+      {% for row in new_rows %}
+          <tr>
+              <td><b><input type="text" name="{{row}}" placeholder="Add row"></input></b></td>
+              {% for column in tableSpec.columns.all %}
+                <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+              {% endfor %}
+          </tr>
+      {% endfor %}
+    {% endif %}
     </table>
     {% endfor %}
 
