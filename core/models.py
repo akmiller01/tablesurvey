@@ -47,6 +47,8 @@ class TableRow(models.Model):
     organisation = models.ForeignKey(Organisation, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
+        if self.organisation:
+            return("{} ({})".format(self.value, self.organisation.name))
         return str(self.value)
 
 

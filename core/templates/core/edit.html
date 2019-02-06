@@ -86,9 +86,9 @@
     {% for row in tableSpec.rows.all %}
       {% if not row.organisation %}
         <tr>
-            <td><b>{{ row }}</b></td>
+            <td><b>{{ row.value }}</b></td>
             {% for column in tableSpec.columns.all %}
-              <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+              <td><input type="text" name="{{ tableSpec.title }}|{{ row.value }}|{{ column }}"/></td>
             {% endfor %}
         </tr>
       {% endif %}
@@ -97,10 +97,10 @@
       {% for row in tableSpec.rows.all %}
         {% if row.organisation == organisation %}
           <tr>
-              <td><b>{{ row }}</b></td>
+              <td><b>{{ row.value }}</b></td>
               {% for column in tableSpec.columns.all %}
 
-                    <td><input type="text" name="{{ tableSpec.title }}|{{ row }}|{{ column }}"/></td>
+                    <td><input type="text" name="{{ tableSpec.title }}|{{ row.value }}|{{ column }}"/></td>
               {% endfor %}
           </tr>
         {% endif %}
