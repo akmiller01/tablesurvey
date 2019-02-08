@@ -98,4 +98,4 @@ class SurveyResponse(models.Model):
     value = models.CharField(max_length=255, blank=True, null=True)
 
     def coordinates(self):
-        return "|".join([str(self.table.value), str(self.row.value), str(self.column.value)])
+        return "|".join([str(self.table.title), str(self.row.value), str(self.column.value)])
